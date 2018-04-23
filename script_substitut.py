@@ -1,11 +1,35 @@
 import mysql.connector
+import time
 
 db = mysql.connector.connect(host="localhost",user="root",password="root", database="stockage_donnees")
 cursor = db.cursor()
 
+
+
+save = input ("Voulez vous visionner vos substituts sauvegardés ? (oui ou non) : ")
+
+
+if save == "oui":
+    affichage_save = """SELECT * FROM sauvegarde"""
+    cursor.execute(affichage_save)
+    rows = cursor.fetchall()
+    print ("Vos substituts sauvegardés :")
+    for row in rows:
+        print("")
+        print ("ID", row[0])
+        print ("Catégorie :", row[1])
+        print ("Nom du produit :", row[2])
+        print ("Nutriscore :", row[3])
+        print ("Lien :", row[4])
+        print("")
+    time.sleep(5)
+
 affichage_categories = """SELECT * FROM categories"""
 cursor.execute(affichage_categories)
 rows = cursor.fetchall()
+print ("")
+print ("Les catégories proposées :")
+print ("")
 for row in rows:
     print ("ID", row[0])
     print ("Catégorie :", row[1])
@@ -13,7 +37,14 @@ for row in rows:
     print("")
 
 print("")
-choix_categorie = input("Veuillez entrer le numéro de la catégorie voulue : ")
+test = 0
+while test == 0:
+    try:
+        choix_categorie = int(input("Veuillez entrer le numéro de la catégorie voulue : "))
+        test = 1
+    except (ValueError):
+        print("Il faut écrire un chiffre ou nombre")
+
 print("")
 affichage_produits = """SELECT id, id_category, nom_produit, nutriscore, lien FROM produits WHERE id_category = %s"""
 cursor.execute(affichage_produits, (choix_categorie, ))
@@ -37,9 +68,14 @@ for donnee in donnees:
     print("")
     ID_produit+=1
 
-
-
-choix_produit = int (input("sélectionnez le numéro du produit que vous voulez substituer : " ))
+test_2 = 0
+while test_2 == 0:
+    try:
+        choix_produit = int(input("Veuillez entrer le numéro du produit voulu : "))
+        test_2 = 1
+    except (ValueError):
+        print("Il faut écrire un chiffre ou nombre")
+        
 print (stock[choix_produit-1])
 
 if stock[choix_produit - 1]["nutriscore"] == "a":

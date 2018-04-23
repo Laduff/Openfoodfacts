@@ -1,6 +1,6 @@
 import requests
 import mysql.connector
-from script import *
+from script_sql import *
 
 #connexion with database
 db = mysql.connector.connect(host="localhost",user="root",password="root", database="stockage_donnees")

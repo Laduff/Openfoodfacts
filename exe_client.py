@@ -1,9 +1,12 @@
 import mysql.connector
-import substitut
+import script_substitut
+
+    
 
 db = mysql.connector.connect(host="localhost",user="root",password="root", database="stockage_donnees")
 cursor = db.cursor()
 print("")
+
 decision = input ("Voulez vous enregistrer ce résultat dans notre base de donnée ? (oui ou non) ")
 if decision == "oui":
     cursor.execute("""set session sql_mode = 'NO_ENGINE_SUBSTITUTION';""")
@@ -17,11 +20,11 @@ if decision == "oui":
         PRIMARY KEY(id)
     );
     """)
-    print (substitut.valeur_sub)
+    print (script_substitut.valeur_sub)
     sql = """INSERT INTO sauvegarde(id_category, nom_produit, nutriscore, lien)
              VALUES (%s, %s, %s, %s)"""
 
-    cursor.execute(sql, (substitut.valeur_sub["categorie"], substitut.valeur_sub["nom_produit"], substitut.valeur_sub["nutriscore"], substitut.valeur_sub["lien"], ))
+    cursor.execute(sql, (script_substitut.valeur_sub["categorie"], script_substitut.valeur_sub["nom_produit"], script_substitut.valeur_sub["nutriscore"], script_substitut.valeur_sub["lien"], ))
     db.commit()
 
 save = input ("Voulez vous visionner vos substituts sauvegardés ? (oui ou non) : ")
@@ -41,6 +44,8 @@ if save == "oui":
         print ("Lien :", row[4])
         print("")
     
-    
+else:
+    print("")
+    print("Vous pouvez fermer la fenêtre")
 
 db.close()
